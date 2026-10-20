@@ -221,6 +221,159 @@ tr:last-child td{border-bottom:0}
 #toast{position:fixed;left:max(16px,env(safe-area-inset-left,0px));right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));margin:0 auto;max-width:420px;background:var(--yellow);color:var(--yellow-ink);padding:12px 14px;border-radius:4px;font-weight:600;font-size:14px;opacity:0;pointer-events:none;transform:translateY(8px);transition:opacity .2s,transform .2s;z-index:20}
 #toast.show{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){#toast{transition:none}}
+/* ---------- hover effects (mouse devices only) ---------- */
+.card,.stat,.drink,.chartbox,.hero,.cd,.meallist li,.exrow input,.numin,textarea,.tabs button,.btn,.sq,.yn button,.exdone,.chip,.link,.pnav input[type=date],.prof input,.prof select,.report input[type=email],.setup summary,.brand .logo,tbody tr td{transition:transform .18s ease,box-shadow .18s ease,background-color .18s ease,border-color .18s ease,color .18s ease,filter .18s ease}
+@media (hover:hover) and (pointer:fine){
+  /* cards and panels lift with a yellow edge */
+  .card:hover,.chartbox:hover,.hero:hover{transform:translateY(-3px);border-color:var(--yellow);box-shadow:0 8px 22px rgba(0,0,0,.55),0 0 0 1px var(--yellow-soft)}
+  .stat:hover,.drink:hover{transform:translateY(-2px);border-color:var(--yellow);box-shadow:0 6px 16px rgba(0,0,0,.5)}
+  .stat:hover .v{color:var(--yellow)}
+  /* tabs */
+  .tabs button:hover:not([aria-pressed="true"]){background:var(--panel-2);color:var(--yellow)}
+  .tabs button[aria-pressed="true"]:hover{filter:brightness(1.08)}
+  /* buttons */
+  .btn:hover:not(:disabled){transform:translateY(-2px);border-color:var(--yellow);box-shadow:0 4px 12px rgba(255,212,0,.18)}
+  .btn:not(.primary):hover:not(:disabled){background:var(--yellow-soft);color:var(--yellow)}
+  .btn.primary:hover:not(:disabled){filter:brightness(1.1);box-shadow:0 4px 14px rgba(255,212,0,.4)}
+  .btn:active:not(:disabled),.sq:active:not(:disabled),.yn button:active,.exdone:active{transform:translateY(0) scale(.97)}
+  .sq:hover:not(:disabled){border-color:var(--yellow);color:var(--yellow);background:var(--yellow-soft);transform:scale(1.08)}
+  /* yes / no */
+  .yn button:hover:not(.good):not(.bad){border-color:var(--yellow);color:var(--yellow);background:var(--yellow-soft);transform:translateY(-2px)}
+  .yn button.good:hover,.yn button.bad:hover{filter:brightness(1.1);transform:translateY(-2px)}
+  /* gym log */
+  .exdone:hover:not(.on){border-color:var(--yellow);color:var(--yellow)}
+  .exdone.on:hover{filter:brightness(1.1)}
+  .exrow:hover{background:rgba(255,212,0,.05)}
+  /* inputs */
+  .exrow input:hover,.numin:hover,textarea:hover,.prof input:hover,.prof select:hover,.report input[type=email]:hover,.pnav input[type=date]:hover{border-color:var(--yellow)}
+  /* lists, chips, links */
+  .meallist li:hover{border-color:var(--yellow);background:var(--yellow-soft)}
+  .chip:hover{border-color:var(--yellow);color:var(--yellow)}
+  .chip.on:hover{color:var(--yellow-ink);filter:brightness(1.1)}
+  .link:hover{color:var(--yellow)}
+  .setup summary:hover{color:var(--yellow)}
+  /* calendar and heatmap */
+  .cd:not(.blank):hover{transform:scale(1.07);border-color:var(--yellow);box-shadow:0 4px 12px rgba(0,0,0,.55);position:relative;z-index:2}
+  .hc:hover{transform:scale(1.6);outline:1px solid var(--yellow);position:relative;z-index:2}
+  /* tables */
+  tbody tr:hover td{background:rgba(255,212,0,.07)}
+  tbody tr:hover td:first-child{background:#1d1c14;color:var(--yellow)}
+  /* logo */
+  .brand .logo:hover{transform:rotate(-4deg) scale(1.06);box-shadow:0 0 16px rgba(255,212,0,.45)}
+}
+@media (prefers-reduced-motion:reduce){
+  .card,.stat,.drink,.chartbox,.hero,.cd,.btn,.sq,.yn button,.exdone,.brand .logo,.hc{transition:none}
+  .card:hover,.chartbox:hover,.hero:hover,.stat:hover,.drink:hover,.btn:hover,.sq:hover,.cd:hover,.hc:hover,.brand .logo:hover,.yn button:hover{transform:none}
+}
+
+/* ---------- unique hover: cursor spotlight, shine sweep, tape growth ---------- */
+.btn,.tabs button{position:relative;overflow:hidden}
+.btn::after,.tabs button::after{content:"";position:absolute;top:0;left:-70%;width:45%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-20deg);pointer-events:none;opacity:0}
+.hazard{transition:height .25s ease}
+@media (hover:hover) and (pointer:fine){
+  /* a yellow spotlight follows the cursor inside cards, tiles and the hero */
+  .card:hover,.stat:hover,.chartbox:hover,.hero:hover{background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%),rgba(255,212,0,.16),rgba(255,212,0,.04) 55%,transparent 75%),var(--panel)}
+  .drink:hover,.meallist li:hover{background:radial-gradient(160px circle at var(--mx,50%) var(--my,50%),rgba(255,212,0,.18),transparent 70%),var(--panel-2)}
+  /* light streak sweeps across buttons and tabs */
+  .btn:hover:not(:disabled)::after,.tabs button:hover::after{opacity:1;animation:sweep .7s ease}
+  .hazard:hover{height:16px}
+}
+@keyframes sweep{from{left:-70%}to{left:130%}}
+@media (prefers-reduced-motion:reduce){.btn:hover::after,.tabs button:hover::after{animation:none;opacity:0}}
+/* ---------- emoji hover: gym vibes ---------- */
+.card,.stat,.drink,.hero,.cd,.yn button,.exdone{position:relative}
+
+/* 1. emoji badge that pops out of the corner of cards, tiles and the hero */
+.grid>.card::after,.wrap>section.card::after,.stat::after,.drink::after,.hero::after,.cd:not(.blank):not(.lx)::after,.yn button::after,.exdone::after{
+  content:var(--e,"✨");position:absolute;top:-14px;right:-6px;font-size:26px;line-height:1;opacity:0;transform:scale(.3);
+  pointer-events:none;z-index:5;filter:drop-shadow(0 3px 4px rgba(0,0,0,.6));transition:opacity .15s ease;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
+.stat::after,.drink::after,.cd::after,.yn button::after,.exdone::after{font-size:20px;top:-12px;right:-4px}
+.hero::after{font-size:34px;top:-16px;right:14px}
+
+/* badge per card on the Today page */
+.grid>.card:nth-child(1){--e:"💪"}
+.grid>.card:nth-child(2){--e:"🥗"}
+.grid>.card:nth-child(3){--e:"🍽️"}
+.grid>.card:nth-child(4){--e:"💧"}
+.grid>.card:nth-child(5){--e:"👟"}
+.grid>.card:nth-child(6){--e:"⚖️"}
+.grid>.card:nth-child(7){--e:"☕"}
+.grid>.card:nth-child(8){--e:"📝"}
+.grid>.card:nth-child(9){--e:"🏋️"}
+.wrap>section.card.report{--e:"📄"}
+.wrap>section.card:not(.report){--e:"📋"}
+.hero{--e:"🔥"}
+/* tea and coffee cups */
+.drink:nth-child(1){--e:"🥛"}
+.drink:nth-child(2){--e:"🍵"}
+.drink:nth-child(3){--e:"☕"}
+.drink:nth-child(4){--e:"🫘"}
+/* stat tiles (week, month, year) */
+.stat:nth-child(1){--e:"📅"}
+.stat:nth-child(2){--e:"🎯"}
+.stat:nth-child(3){--e:"🥦"}
+.stat:nth-child(4){--e:"🚫"}
+.stat:nth-child(5){--e:"🏋️"}
+.stat:nth-child(6){--e:"💧"}
+.stat:nth-child(7){--e:"👟"}
+.stat:nth-child(8){--e:"⚖️"}
+.stat:nth-child(9){--e:"🍵"}
+.stat:nth-child(10){--e:"🍃"}
+.stat:nth-child(11){--e:"☕"}
+.stat:nth-child(12){--e:"🫘"}
+/* yes / no and gym done */
+.yn button[data-v="yes"]{--e:"👍"}
+.yn button[data-v="no"]{--e:"👎"}
+.exdone{--e:"💪"}
+/* calendar days react to how well the day went */
+.cd.l5{--e:"🏆"}
+.cd.l4{--e:"🔥"}
+.cd.l3{--e:"💪"}
+.cd.l2{--e:"👍"}
+.cd.l1{--e:"🙂"}
+.cd.l0{--e:"😴"}
+
+/* 2. emoji that slides into buttons and tabs */
+.btn,.tabs button{--be:"✨"}
+.btn::before,.tabs button::before{content:var(--be);display:inline-block;max-width:0;opacity:0;overflow:hidden;white-space:nowrap;vertical-align:bottom;margin-right:0;
+  transition:max-width .25s ease,opacity .25s ease,margin .25s ease;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
+.btn[data-a="water"]{--be:"💧"}
+.btn[data-a="steps"]{--be:"👟"}
+.btn[data-a="exadd"]{--be:"🏋️"}
+.btn[data-a="pdf"]{--be:"📄"}
+.btn[data-a="xlsx"]{--be:"📊"}
+.btn[data-a="mailstep"],.btn[data-a="mailsend"]{--be:"✉️"}
+.btn[data-a="mailcancel"]{--be:"❌"}
+.btn[data-a="mealadd"],.btn[data-a="mealpick"]{--be:"🍴"}
+.btn[data-a="drinkadd"]{--be:"☕"}
+.btn[data-a="timeradd"]{--be:"⏳"}
+.btn[data-a="timerstart"]{--be:"⏱️"}
+.btn[data-a="timerpause"]{--be:"⏸️"}
+.btn[data-a="timerreset"]{--be:"🔄"}
+.btn[data-a="nav"]{--be:"📅"}
+.tabs button[data-v="today"]{--be:"☀️"}
+.tabs button[data-v="week"]{--be:"📆"}
+.tabs button[data-v="month"]{--be:"🗓️"}
+.tabs button[data-v="year"]{--be:"🏆"}
+
+/* 3. dumbbell lifts next to the title when you hover the brand */
+@keyframes emojipop{0%{transform:scale(.3) rotate(-30deg)}60%{transform:scale(1.4) rotate(14deg)}100%{transform:scale(1) rotate(-8deg)}}
+@keyframes lift{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-8px) rotate(-14deg)}}
+
+@media (hover:hover) and (pointer:fine){
+  .grid>.card:hover::after,.wrap>section.card:hover::after,.stat:hover::after,.drink:hover::after,.hero:hover::after,
+  .cd:not(.blank):not(.lx):hover::after,.yn button:hover::after,.exdone:hover::after{opacity:1;animation:emojipop .5s cubic-bezier(.3,1.5,.5,1) forwards}
+  .btn:hover:not(:disabled)::before,.tabs button:hover::before{max-width:1.8em;opacity:1;margin-right:.4em}
+  .brand:hover h1::after{content:" 🏋️";display:inline-block;animation:lift .9s ease-in-out infinite;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
+}
+@media (prefers-reduced-motion:reduce){
+  .grid>.card:hover::after,.wrap>section.card:hover::after,.stat:hover::after,.drink:hover::after,.hero:hover::after,
+  .cd:hover::after,.yn button:hover::after,.exdone:hover::after{animation:none;transform:none}
+  .brand:hover h1::after{animation:none}
+  .btn::before,.tabs button::before{transition:none}
+}
+
+
 </style>
 
 <div class="wrap" id="app"></div>
@@ -517,7 +670,7 @@ function profileCard(){
    +'<label>Gender<select data-f="pgender"><option value=""'+(st.gender?'':' selected')+'>Select</option>'+gs.map(function(g){return '<option value="'+g+'"'+(st.gender===g?' selected':'')+'>'+g+'</option>'}).join('')+'</select></label>'
    +'</div></article>';
 }
-var MEALS=[['breakfast','Morning breakfast'],['lunch','Lunch'],['snacks','Snacks'],['dinner','Dinner']];
+var MEALS=[['breakfast','Breakfast'],['lunch','Lunch'],['snacks','Snacks'],['dinner','Dinner']];
 function mealsCard(d){
   var cur=S.meal||'breakfast',m=d.meals||{},tabs='',lists='';
   MEALS.forEach(function(x){var n=(m[x[0]]||[]).length;tabs+='<button class="btn'+(cur===x[0]?' primary':'')+'" data-a="mealpick" data-m="'+x[0]+'" aria-pressed="'+(cur===x[0])+'">'+x[1]+(n?' <small>('+n+')</small>':'')+'</button>'});
@@ -1289,6 +1442,15 @@ async function doMail(){
     var b2=document.getElementById('mailsend');if(b2)b2.disabled=false;
   }
 }
+
+/* cursor spotlight position for hover effect */
+app.addEventListener('mousemove',function(e){
+  var t=e.target.closest&&e.target.closest('.card,.stat,.chartbox,.hero,.drink,.meallist li');
+  if(!t)return;
+  var r=t.getBoundingClientRect();
+  t.style.setProperty('--mx',(e.clientX-r.left)+'px');
+  t.style.setProperty('--my',(e.clientY-r.top)+'px');
+});
 
 /* ---------- boot ---------- */
 render(true);
